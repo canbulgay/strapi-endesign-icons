@@ -3,27 +3,25 @@ import { prefixPluginTranslations } from "@strapi/helper-plugin";
 import pluginPkg from "../../package.json";
 import pluginId from "./pluginId";
 import Initializer from "./components/Initializer";
-import PluginIcon from "./components/PluginIcon";
+import { EnIcon, EnCuzdanimIcon } from "./components/PluginIcon";
 
 const name = "strapi-endesign-icons";
 
 export default {
   register(app: any) {
     try {
-      console.log("registering strapi-endesign-icons plugin", pluginId);
-      console.log("app name", name);
       app.customFields.register({
         name: name,
         pluginId: pluginId,
-        icon: PluginIcon,
+        icon: EnIcon,
         type: "string",
         intlLabel: {
           id: `${pluginId}.field.label`,
-          defaultMessage: "Icon",
+          defaultMessage: "Endesign Icon",
         },
         intlDescription: {
           id: `${pluginId}.field.description`,
-          defaultMessage: "Select an icon",
+          defaultMessage: "Select an endesign icon",
         },
         components: {
           Input: async () =>
@@ -32,33 +30,33 @@ export default {
             ),
         },
         options: {
-          // advanced: [
-          //   {
-          //     sectionTitle: {
-          //       id: `${pluginId}.section-title.settings`,
-          //       defaultMessage: "Settings",
-          //     },
-          //     items: [
-          //       {
-          //         name: "required",
-          //         type: "checkbox",
-          //         intlLabel: {
-          //           defaultMessage: "Required field",
-          //         },
-          //         description: {
-          //           defaultMessage:
-          //             "You won't be able to create an entry if this field is empty",
-          //         },
-          //       },
-          //     ],
-          //   },
-          // ],
+          advanced: [
+            {
+              sectionTitle: {
+                id: `${pluginId}.section-title.settings`,
+                defaultMessage: "Settings",
+              },
+              items: [
+                {
+                  name: "required",
+                  type: "checkbox",
+                  intlLabel: {
+                    defaultMessage: "Required field",
+                  },
+                  description: {
+                    defaultMessage:
+                      "You won't be able to create an entry if this field is empty",
+                  },
+                },
+              ],
+            },
+          ],
         },
       });
 
       app.addMenuLink({
         to: `/plugins/${pluginId}`,
-        icon: PluginIcon,
+        icon: EnCuzdanimIcon,
         intlLabel: {
           id: `${pluginId}.plugin.name`,
           defaultMessage: name,

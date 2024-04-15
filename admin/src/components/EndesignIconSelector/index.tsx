@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -27,7 +27,6 @@ import { EndesignIconComponent } from "./IconComponent";
 import { EndesignIconLibrary } from "./IconLibrary";
 import * as EndesignIcons from "@enuygun/icons";
 import { MessageDescriptor } from "react-intl";
-import { Minus, Plus } from "@strapi/icons";
 
 interface IEndesignIconSelector {
   description: null | MessageDescriptor;
@@ -43,32 +42,26 @@ interface IEndesignIconSelector {
 export type IEndesignIcon = keyof typeof EndesignIcons;
 
 const EndesignIconSelector: React.FC<IEndesignIconSelector> = (props) => {
-  const {
-    description,
-    error,
-    intlLabel,
-    placeholder,
-    name,
-    required,
-    onChange,
-    value,
-  } = props;
-  console.log(props);
-  const allEndesignIcons = Object.keys(EndesignIcons) as IEndesignIcon[];
+  const { description, error, intlLabel, name, required, onChange, value } =
+    props;
+  const Plus = EndesignIcons.Plus;
+
+  const allEndesignIconNames = Object.keys(EndesignIcons) as IEndesignIcon[];
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isToggle, setIsToggle] = useState(false);
 
   const toggleModal = () => setIsModalVisible((prev) => !prev);
 
-  const changeIcon = (newIcon: string) =>
-    onChange({
+  const changeIcon = (newIcon: string) => {
+    return onChange({
       target: {
         name,
         type: "string",
         value: newIcon,
       },
     });
+  };
 
   const onSelectIcon = (newIcon: string) => {
     toggleModal();
@@ -78,9 +71,8 @@ const EndesignIconSelector: React.FC<IEndesignIconSelector> = (props) => {
   return (
     <>
       <TextInput
-        type="text"
         label={intlLabel?.defaultMessage}
-        placeholder={placeholder && "Icon Name"}
+        placeholder={"Select an endesign icon"}
         hint={description}
         disabled={false}
         onChange={onChange}
@@ -88,20 +80,27 @@ const EndesignIconSelector: React.FC<IEndesignIconSelector> = (props) => {
         name={"endesign-icon-selector"}
         value={value || ""}
         required={required}
+        style={{ cursor: "pointer" }}
         error={error}
+        onClick={toggleModal}
         startAction={
           <FieldAction onClick={toggleModal}>
             {value ? (
               <EndesignIconComponent icon={value as IEndesignIcon} />
             ) : (
-              <Typography>Select Icon</Typography>
+              <Typography
+                variant="pi"
+                style={{ cursor: "pointer", marginTop: "5px" }}
+              >
+                <Plus />
+              </Typography>
             )}
           </FieldAction>
         }
         endAction={
           !!value && (
             <FieldAction onClick={() => changeIcon("")}>
-              <Typography variant="pi">Clear Icon</Typography>
+              <Typography variant="pi">Clear</Typography>
             </FieldAction>
           )
         }
@@ -131,7 +130,7 @@ const EndesignIconSelector: React.FC<IEndesignIconSelector> = (props) => {
                           <Typography>Endesign Icon Selector</Typography>
                           <Badge style={{ marginLeft: "20px" }}>
                             {
-                              allEndesignIcons.filter((icon) =>
+                              allEndesignIconNames.filter((icon) =>
                                 icon
                                   .toLowerCase()
                                   .includes(searchTerm.toLowerCase())
@@ -150,7 +149,7 @@ const EndesignIconSelector: React.FC<IEndesignIconSelector> = (props) => {
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
                                 ) => setSearchTerm(e.target.value)}
-                                placeholder="Arama yap"
+                                placeholder="Search"
                               >
                                 Search
                               </Searchbar>
@@ -170,7 +169,7 @@ const EndesignIconSelector: React.FC<IEndesignIconSelector> = (props) => {
                           gap={1}
                         >
                           <EndesignIconLibrary
-                            icons={allEndesignIcons.filter((icon) =>
+                            icons={allEndesignIconNames.filter((icon) =>
                               icon
                                 .toLowerCase()
                                 .includes(searchTerm.toLowerCase())
@@ -186,18 +185,6 @@ const EndesignIconSelector: React.FC<IEndesignIconSelector> = (props) => {
             </Box>
           </ModalBody>
           <ModalFooter
-            // startActions={
-            //   <Select
-            //     minWidth={500}
-            //     required={0}
-            //     error={error}
-            //     value={}
-            //     onChange={}
-            //   >
-            //     <Option value="">
-            //     </Option>
-            //   </Select>
-            // }
             endActions={
               <Button variant="tertiary" onClick={toggleModal}>
                 Close

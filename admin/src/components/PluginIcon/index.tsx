@@ -5,8 +5,7 @@
  */
 
 import React from "react";
-import { Gift } from "@strapi/icons";
+import { En, EnCuzdanim } from "@enuygun/icons";
 
-const PluginIcon = () => <Gift />;
-
-export default PluginIcon;
+export const EnIcon = () => <En />;
+export const EnCuzdanimIcon = () => <EnCuzdanim />;
